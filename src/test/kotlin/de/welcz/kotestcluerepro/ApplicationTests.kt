@@ -4,6 +4,7 @@ import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import org.opentest4j.AssertionFailedError
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.env.Environment
@@ -37,6 +38,18 @@ class ApplicationTests(private val environment: Environment,
 
     withClue("Fails without this clue") {
       response.expectStatus().isOk
+    }
+  }
+
+  test("fails without clue using AssertionError") {
+    withClue("Fails without this clue") {
+      throw AssertionError("BAM!")
+    }
+  }
+
+  test("fails without clue using opentest4j Assertion Error") {
+    withClue("Fails without this clue") {
+      throw AssertionFailedError("BAM²!")
     }
   }
 })
